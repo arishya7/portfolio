@@ -140,7 +140,7 @@ const projects = [
   {
     id:"sociallistening", tags:["data","ai","fullstack"], cat:"Data",
     date:"Aug 2025 – Jan 2026", context:"Mummy's Market",
-    title:"Social Listening Dashboard — Turning online chatter into signal",
+    title:"Social Listening Dashboard (Mummy's Market) — Turning online chatter into signal",
     impact:"An analytics platform that aggregates conversation across sources and turns it into sentiment, keyword and reliability signals marketing teams can act on.",
     stat:"70%", statCaption:"cut in manual QA effort via Gemini-powered validation",
     body:[
@@ -156,7 +156,7 @@ const projects = [
   {
     id:"influencerdash", tags:["data","fullstack"], cat:"Data",
     date:"Aug 2025 – Jan 2026", context:"Mummy's Market",
-    title:"Influencer Dashboard — One interface for discovery and outreach",
+    title:"Influencer Dashboard (Mummy's Market) — One interface for discovery and outreach",
     impact:"Consolidating influencer data from multiple platforms into a single structured interface for discovery, evaluation and outreach.",
     stat:"500+", statCaption:"online sources consolidated",
     body:[
@@ -181,7 +181,7 @@ const projects = [
     role:"System architecture, full-stack development, testing",
     result:"Reliable end-to-end booking workflows, tested at unit, integration and system level",
     tech:"React · Node.js · Express · SQL · Ascenda API · REST APIs · UML",
-    images:["App screenshot","Architecture diagram"],
+    images:["Room details screenshot","Hotel details screenshot"],
     links:[
       {t:"Presentation ↗",u:"https://www.canva.com/design/DAGv3n0gUm4/X02pQJujENSV5RXZrWwR-g/view?utm_content=DAGv3n0gUm4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h46661a483d"},
       {t:"Demo video ↗",u:"https://youtu.be/QTGqpzzO-40"}
@@ -199,7 +199,7 @@ const projects = [
     role:"Prototype build, pitching, UI/UX",
     result:"Working physical prototype, pitched end to end",
     tech:"Bubble.io · Prototyping · Pitching · Video Editing · UI/UX",
-    images:["Prototype photo"],
+    images:["Web app screenshot"],
     links:[
       {t:"Pitch video ↗",u:"https://youtu.be/OdO8izkvzos"},
       {t:"Demo video ↗",u:"https://youtu.be/vo0aa_Ro530"},
@@ -219,7 +219,7 @@ const projects = [
     role:"Data analysis, regression modelling, website build",
     result:"54-country, 10-year regression model, deployed as an interactive calculator",
     tech:"Python · Excel · Bootstrap · W3Schools · UI/UX",
-    images:["Findings chart"],
+    images:["Project title slide"],
     links:[
       {t:"Slide deck ↗",u:"https://www.canva.com/design/DAGXK0lUKjQ/BAxc11tWThCjQKeHFR3_Nw/view?utm_content=DAGXK0lUKjQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdb67092a94"},
       {t:"Video ↗",u:"https://youtu.be/On1eTeHb9sw"}
@@ -309,3 +309,19 @@ function route(){
 }
 window.addEventListener('hashchange',route);
 route();
+
+/* ---------------- Lightbox (click gallery / co-curricular photos to enlarge) ---------------- */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+document.addEventListener('click', e=>{
+  const img = e.target.closest('.gallery-item img, .cocu .imgph img');
+  if(img && !img.classList.contains('ph-broken')){
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('active');
+  }
+});
+lightbox.addEventListener('click', ()=>lightbox.classList.remove('active'));
+window.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') lightbox.classList.remove('active');
+});
