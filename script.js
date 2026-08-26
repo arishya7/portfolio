@@ -51,7 +51,7 @@ const projects = [
     role:"Automation design, AI-assisted tooling, verification framework",
     result:"Eliminated manual re-entry for hundreds of requirement updates; closed an untested edge-case gap",
     tech:"Python · Agentic AI · IBM DOORS DNG",
-    images:["Team at Aumovio"],
+    images:["Team at Aumovio","Automation tool","Compare-and-Update pipeline output"],
     links:[]
   },
   {
