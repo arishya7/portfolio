@@ -7,54 +7,29 @@ Live site: https://arishya7.github.io/portfolio
 - `index.html` — page markup
 - `style.css` — all styling
 - `script.js` — project data + tab/router logic + image fallback rendering
-- `images/` — drop photos here (see naming below)
-- `assets/resume.pdf` — drop your resume here
+- `images/` — project, co-curricular and site photos
+- `assets/resume.pdf` — drop your resume here (not added yet)
+- `demos/atm-replenishment.html` — the standalone ATM Replenishment simulation, linked live from its project card
 
 Images are optional at any point in time: if a file isn't there yet, the page
-shows a "+ Add ___" placeholder instead of a broken image. Add files with the
-exact name below and refresh — no code changes needed.
+shows a "+ Add ___" placeholder instead of a broken image.
 
-## Image checklist
+## Image status
 
-### Site
-- `images/site/profile.jpg` — About page photo
+All project, About and co-curricular photos are filled in except:
 
-### Co-curricular
-- `images/cocurricular/greenprint.jpg`
-- `images/cocurricular/steamunity.jpg`
+- `images/site/profile.jpg` — About page photo, not added yet
+- Signify's second gallery slot ("Award photo" with Singtel) — not added yet
+- Résumé PDF at `assets/resume.pdf` — not added yet
 
-### Project thumbnails (card view)
-- `images/projects/coolride-thumb.jpg`
-- `images/projects/aumovio-thumb.jpg`
-- `images/projects/databusters-thumb.jpg`
-- `images/projects/caretech-thumb.jpg`
-- `images/projects/signify-thumb.jpg`
-- `images/projects/sociallistening-thumb.jpg`
-- `images/projects/influencerdash-thumb.jpg`
-- `images/projects/urop-thumb.jpg`
-- `images/projects/hotel-thumb.jpg`
-- `images/projects/qube-thumb.jpg`
-- `images/projects/foodsec-thumb.jpg`
+## Known gaps / things flagged along the way
 
-### Project detail galleries
-Numbered in the order they should appear, per project:
-- `images/projects/coolride-1.jpg`, `coolride-2.jpg`
-- `images/projects/aumovio-1.jpg`
-- `images/projects/databusters-1.jpg`, `databusters-2.jpg`
-- `images/projects/caretech-1.jpg`, `caretech-2.jpg`
-- `images/projects/signify-1.jpg`, `signify-2.jpg`
-- `images/projects/sociallistening-1.jpg`, `sociallistening-2.jpg`
-- `images/projects/influencerdash-1.jpg`, `influencerdash-2.jpg`
-- `images/projects/urop-1.jpg`
-- `images/projects/hotel-1.jpg`, `hotel-2.jpg`
-- `images/projects/qube-1.jpg`
-- `images/projects/foodsec-1.jpg`
-
-## Still-placeholder links
-
-- Social Listening Dashboard → no live link added. The one given (`https://talks-sustainable-soc-rugby.trycloudflare.com/brand.html`) is a temporary Cloudflare tunnel URL that will likely go dead — send a stable link if you get one.
-- DataBusters → "Dashboard" and "Report" links still point to `#`, no URLs given yet.
-- CareTech → "Presentation" link still points to `#`, no URL given yet.
+- **Aumovio** → two screenshots you dropped in (`aumovio automation.png`, `aumovio compare pipeline.png`, still sitting in `images/projects/` unused) show real internal usernames, file paths and proprietary requirement/module names from the company's DOORS tooling. Not wired into the site — get these sanitized/cleared before publishing. The safe team photo is used in their place for now.
+- **Aquaponics Monitoring** → project removed per your instruction. Its one photo (`images/projects/aquaponics .jpg`) is still sitting in the folder, unused, in case you want it back later.
+- **Influencer Dashboard** → live link is Mummy's Market's internal server address (`http://mummysmarket.synology.me:8501/`) — added since you resent it after the flag, but it's worth double-checking that's meant to be public.
+- **Social Listening Dashboard** → no live link added. The one given is a temporary Cloudflare tunnel URL that would likely be dead by the time anyone clicks it — send a stable one if you get it.
+- **CoolRide** → lost the "setup day" candid photo to a sequencing mistake on my end (deleted the source before finalizing, then overwrote its copy). Gallery now uses the impact/routing poster + the award photo instead. Resend the setup-day shot if you still want it in.
+- **ATM Replenishment** → the actual interactive HTML tool you built (`~/SAD/main.html`) is copied into the repo at `demos/atm-replenishment.html` and linked live from the project card, since it's self-contained (no external requests) and uses simulated ATM data. Say the word if you'd rather it not be public and I'll pull it and fall back to a screenshot.
 
 ## Local preview
 

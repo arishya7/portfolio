@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAD — ATM Replenishment Simulation</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--surf:#f8f9fa;--border:#e5e7eb;--border2:#d1d5db;
+  --text:#111827;--muted:#6b7280;--light:#9ca3af;
+  --blue:#2563eb;--blue-l:#eff6ff;--blue-b:#bfdbfe;
+  --green:#059669;--green-l:#f0fdf4;--green-b:#bbf7d0;
+  --red:#dc2626;--red-l:#fef2f2;--red-b:#fecaca;
+  --amber:#d97706;--amber-l:#fffbeb;--amber-b:#fde68a;
+  --purple:#7c3aed;--purple-l:#f5f3ff;--purple-b:#ddd6fe;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.5}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 24px}
+.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:18px;font-weight:700;letter-spacing:-0.3px}
+.hdr-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.badge-sad{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--blue);background:var(--blue-l);border:1px solid var(--blue-b);padding:5px 12px;border-radius:5px}
+.flowchart{display:flex;align-items:center;margin-bottom:24px;overflow-x:auto;gap:0}
+.fc-node{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.fc-btn{padding:9px 16px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg);color:var(--muted);transition:all .15s;white-space:nowrap}
+.fc-btn:hover{border-color:var(--blue);color:var(--blue)}
+.fc-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.fc-btn.ai-node{border-style:dashed}
+.fc-btn.ai-node.active{background:var(--purple);border-color:var(--purple);border-style:solid;color:#fff}
+.fc-btn.done{background:var(--green-l);border-color:var(--green-b);color:var(--green);border-style:solid}
+.fc-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+.fc-arrow{width:24px;height:1px;background:var(--border2);flex-shrink:0;position:relative}
+.fc-arrow::after{content:'';position:absolute;right:-1px;top:-3px;border-left:7px solid var(--border2);border-top:4px solid transparent;border-bottom:4px solid transparent}
+.fc-sub{font-size:9px;color:var(--light);margin-top:5px;text-align:center}
+.info-box{border-left:4px solid var(--blue);background:var(--surf);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:24px}
+.info-box.ai-mode{border-left-color:var(--purple)}
+.info-step{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600}
+.info-headline{font-size:20px;font-weight:800;color:var(--text);line-height:1.25}
+.info-sub{font-size:13px;color:var(--muted);margin-top:5px}
+.section{display:none}.section.on{display:block}
+.cluster-flow-row{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr;gap:0;align-items:center;margin-bottom:24px}
+.flow-arrow{text-align:center;font-size:20px;color:var(--border2)}
+.algo-box{background:var(--surf);border:1.5px solid var(--border2);border-radius:10px;padding:20px;text-align:center}
+.algo-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.algo-sub{font-size:11px;color:var(--muted)}
+.cluster-chips{display:flex;flex-direction:column;gap:10px}
+.chip{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:8px}
+.chip.high{background:var(--red-l);border:1px solid var(--red-b)}
+.chip.mid{background:var(--amber-l);border:1px solid var(--amber-b)}
+.chip.low{background:var(--green-l);border:1px solid var(--green-b)}
+.chip-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.chip.high .chip-dot{background:var(--red)}.chip.mid .chip-dot{background:var(--amber)}.chip.low .chip-dot{background:var(--green)}
+.chip-label{font-size:13px;font-weight:700}
+.chip.high .chip-label{color:var(--red)}.chip.mid .chip-label{color:var(--amber)}.chip.low .chip-label{color:var(--green)}
+.chip-atms{font-size:11px;color:var(--muted);margin-left:auto}
+.section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}
+.loc-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.loc-table th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surf);font-weight:600}
+.loc-table td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+.loc-table tr:last-child td{border-bottom:none}
+.loc-table tbody tr:hover td{background:var(--surf)}
+.atm-id{font-weight:800;font-size:13px;letter-spacing:-.3px}
+.pill{display:inline-block;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:700}
+.pill-r{background:var(--red-l);color:var(--red);border:1px solid var(--red-b)}
+.pill-a{background:var(--amber-l);color:var(--amber);border:1px solid var(--amber-b)}
+.pill-b{background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-b)}
+.pill-g{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.pill-m{background:var(--surf);color:var(--muted);border:1px solid var(--border2)}
+.wt-intro{font-size:13px;color:var(--muted);background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:20px;line-height:1.7}
+.wt-intro strong{color:var(--text)}
+.thresh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tc{border-radius:10px;padding:20px;border:1px solid;text-align:center}
+.tc.high{background:var(--red-l);border-color:var(--red-b)}
+.tc.mid{background:var(--amber-l);border-color:var(--amber-b)}
+.tc.low{background:var(--green-l);border-color:var(--green-b)}
+.tc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.tc.high .tc-label{color:var(--red)}.tc.mid .tc-label{color:var(--amber)}.tc.low .tc-label{color:var(--green)}
+.tc-weight{font-size:11px;margin-bottom:14px;padding:4px 10px;border-radius:4px;display:inline-block}
+.tc.high .tc-weight{background:rgba(220,38,38,.08);color:var(--red)}
+.tc.mid .tc-weight{background:rgba(217,119,6,.08);color:var(--amber)}
+.tc.low .tc-weight{background:rgba(5,150,105,.08);color:var(--green)}
+.tc-pct{font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.tc.high .tc-pct{color:var(--red)}.tc.mid .tc-pct{color:var(--amber)}.tc.low .tc-pct{color:var(--green)}
+.tc-rule{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.tc-dollar{font-size:16px;font-weight:800;margin-bottom:12px}
+.tc.high .tc-dollar{color:var(--red)}.tc.mid .tc-dollar{color:var(--amber)}.tc.low .tc-dollar{color:var(--green)}
+.tc-velocity{font-size:12px;color:var(--muted);padding-top:12px;border-top:1px solid;line-height:1.7}
+.tc.high .tc-velocity{border-color:var(--red-b)}.tc.mid .tc-velocity{border-color:var(--amber-b)}.tc.low .tc-velocity{border-color:var(--green-b)}
+.tc-atms{font-size:11px;color:var(--muted);margin-top:6px}
+.xgb-features{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.feat{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;font-size:11px;color:var(--muted)}
+.feat-icon{font-size:18px;margin-bottom:5px}
+.feat-name{font-weight:700;color:var(--text);margin-bottom:2px;font-size:12px}
+.feat.ai-feat{background:var(--purple-l);border-color:var(--purple-b)}
+.feat.ai-feat .feat-name{color:var(--purple)}
+.ai-alert{background:var(--amber-l);border:1px solid var(--amber-b);border-radius:10px;padding:18px 22px;margin-bottom:16px}
+.ai-hdr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ai-icon{font-size:22px}
+.ai-title{font-size:15px;font-weight:800;color:var(--amber)}
+.ai-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.ai-signals{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
+.ai-sig-card{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--amber-b);border-radius:7px;font-size:12px;font-weight:600;color:var(--text)}
+.llm-box{background:var(--surf);border:1px solid var(--purple-b);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.llm-title{font-size:11px;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-weight:700}
+.ll{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:5px;opacity:0;transition:opacity .3s}
+.ll.on{opacity:1}
+.ll .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.ll.hit{color:var(--amber);font-weight:600}.ll.hit .dot{background:var(--amber)}
+.ll.ok{color:var(--green);font-weight:600}.ll.ok .dot{background:var(--green)}
+.formula-box{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:16px;display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.formula-eq{font-size:14px;font-weight:700;color:var(--text);line-height:2}
+.formula-eq span{color:var(--red)}
+.window-defs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.wd{border-radius:8px;padding:12px 14px;border:1px solid;text-align:center}
+.wd.p0{background:var(--red-l);border-color:var(--red-b)}
+.wd.p1{background:var(--amber-l);border-color:var(--amber-b)}
+.wd.p2{background:var(--blue-l);border-color:var(--blue-b)}
+.wd-name{font-size:13px;font-weight:800;margin-bottom:2px}
+.wd.p0 .wd-name{color:var(--red)}.wd.p1 .wd-name{color:var(--amber)}.wd.p2 .wd-name{color:var(--blue)}
+.wd-window{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.wd-desc{font-size:11px;color:var(--muted)}
+.ilp-layout{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:20px}
+.ilp-constraints{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.ilp-c-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px}
+.ilp-c-item{display:flex;gap:8px;font-size:12px;color:var(--muted);margin-bottom:7px;align-items:flex-start;line-height:1.5}
+.ilp-c-icon{flex-shrink:0;font-size:13px}
+.fork-note{text-align:center;font-size:14px;color:var(--muted);margin-bottom:16px}
+.fork-note strong{color:var(--text)}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+.pc{border-radius:10px;padding:20px;cursor:pointer;border:2px solid;transition:all .2s}
+.pA{background:var(--red-l);border-color:var(--red-b)}
+.pA:hover,.pA.sel{border-color:var(--red);box-shadow:0 0 0 4px rgba(220,38,38,.08)}
+.pB{background:var(--green-l);border-color:var(--green-b)}
+.pB:hover,.pB.sel{border-color:var(--green);box-shadow:0 0 0 4px rgba(5,150,105,.08)}
+.path-hero{font-size:42px;font-weight:900;letter-spacing:-2px;line-height:1;margin:10px 0 4px}
+.pA .path-hero{color:var(--red)}.pB .path-hero{color:var(--green)}
+.path-hero-label{font-size:13px;font-weight:600;margin-bottom:14px}
+.pA .path-hero-label{color:var(--red)}.pB .path-hero-label{color:var(--green)}
+.pt{font-size:15px;font-weight:700;margin-bottom:2px}
+.pA .pt{color:var(--red)}.pB .pt{color:var(--green)}
+.path-items{margin-top:14px;display:flex;flex-direction:column;gap:6px;border-top:1px solid;padding-top:14px}
+.pA .path-items{border-color:var(--red-b)}.pB .path-items{border-color:var(--green-b)}
+.path-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text);line-height:1.4}
+.pi-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.outcome-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:8px}
+.kpi-vals{display:flex;align-items:center;justify-content:center;gap:20px}
+.kpi-val{text-align:center}
+.kpi-num{font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.kpi-sep{font-size:18px;color:var(--border2)}
+.kpi-val.bad .kpi-num{color:var(--red)}.kpi-val.good .kpi-num{color:var(--green)}
+.outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.oc{border-radius:10px;padding:18px}
+.ocA{background:var(--red-l);border:1px solid var(--red-b)}
+.ocB{background:var(--green-l);border:1px solid var(--green-b)}
+.oc-title{font-size:14px;font-weight:800;margin-bottom:14px}
+.ocA .oc-title{color:var(--red)}.ocB .oc-title{color:var(--green)}
+.or{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:12px}
+.or:last-child{border-bottom:none}
+.or .ok{color:var(--muted)}.or .ov{font-weight:700}
+.ocA .ov{color:var(--red)}.ocB .ov{color:var(--green)}
+.verdict{text-align:center;padding:24px;background:var(--green-l);border:1px solid var(--green-b);border-radius:10px}
+.v-big{font-size:24px;font-weight:900;color:var(--green);margin-bottom:10px;letter-spacing:-.5px}
+.verdict p{font-size:13px;color:var(--muted);line-height:1.7;max-width:600px;margin:0 auto}
+.verdict strong{color:var(--text)}
+.atm-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.ac{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:14px;transition:all .3s}
+.ac.c-high{border-top:4px solid var(--red)}.ac.c-mid{border-top:4px solid var(--amber)}.ac.c-low{border-top:4px solid var(--green)}
+.ac.flagged{border-color:var(--amber);background:var(--amber-l)}
+.ac.cashout{border-color:var(--red);background:var(--red-l);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.15)}50%{box-shadow:0 0 0 8px rgba(220,38,38,0)}}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px}
+.ac-id{font-weight:800;font-size:14px;letter-spacing:-.3px}
+.cluster-chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;flex-shrink:0}
+.chip-r{background:var(--red-l);color:var(--red);border:1px solid var(--red-b)}
+.chip-a{background:var(--amber-l);color:var(--amber);border:1px solid var(--amber-b)}
+.chip-g{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.ac-loc{font-size:11px;color:var(--muted);margin-bottom:10px}
+.cash-hero{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:3px}
+.bar-wrap{position:relative;margin:4px 0 6px}
+.cash-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.cash-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.thresh-line{position:absolute;top:-4px;bottom:-4px;width:2px;background:#374151;border-radius:1px;opacity:.3;transform:translateX(-50%)}
+.cash-trigger{font-size:10px;color:var(--muted);margin-bottom:2px}
+.div{height:1px;background:var(--border);margin:10px 0}
+.ac-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0}
+.ac-lbl{font-size:11px;color:var(--muted)}.ac-val{font-size:11px;font-weight:700}
+.vr{color:var(--red)}.va{color:var(--amber)}.vg{color:var(--green)}.vb{color:var(--blue)}.vp{color:var(--purple)}
+.bdg{display:inline-block;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:700;margin-top:5px}
+.bP0{background:var(--red-l);color:var(--red);border:1px solid var(--red-b)}
+.bP1{background:var(--amber-l);color:var(--amber);border:1px solid var(--amber-b)}
+.bP2{background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-b)}
+.bN{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.bRULE{background:var(--purple-l);color:var(--purple);border:1px solid var(--purple-b)}
+.bCO{background:var(--red);color:#fff;animation:blink 1s infinite;font-size:11px;padding:4px 10px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.bUp{display:block;font-size:9px;margin-top:3px;background:var(--green-l);color:var(--green);border:1px solid var(--green-b);padding:2px 7px;border-radius:3px;font-weight:700}
+.ai-badge{font-size:10px;color:var(--amber);margin-top:3px;font-weight:600}
+.nav{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid var(--border)}
+.btn{padding:10px 24px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:#1d4ed8}
+.btn-p:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+.btn-s{background:transparent;color:var(--muted);border:1px solid var(--border2)}.btn-s:hover{color:var(--text);border-color:var(--text)}
+.btn-s:disabled{opacity:.4;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hdr">
+  <div>
+    <h1>ATM Replenishment Simulation</h1>
+    <div class="hdr-sub">Planning date: 01 May 2026 · Labour Day long weekend · UOB Singapore · 5 ATMs</div>
+  </div>
+  <div class="badge-sad">SAD - Spreadsheets Are DEAD</div>
+</div>
+<div class="flowchart">
+  <div class="fc-node"><button class="fc-btn" id="fc0" onclick="goStep(0)">1. Clustering</button><div class="fc-sub">High / Mid / Low</div></div>
+  <div class="fc-arrow"></div>
+  <div class="fc-node"><button class="fc-btn" id="fc1" onclick="goStep(1)">2. Weightages</button><div class="fc-sub">scores + thresholds</div></div>
+  <div class="fc-arrow"></div>
+  <div class="fc-node"><button class="fc-btn ai-node" id="fc2" onclick="goStep(2)">3. XGBoost + AI ★</button><div class="fc-sub">forecast + signals</div></div>
+  <div class="fc-arrow"></div>
+  <div class="fc-node"><button class="fc-btn" id="fc3" onclick="goStep(3)">4. Trip Decision</button><div class="fc-sub">cash vs threshold</div></div>
+  <div class="fc-arrow"></div>
+  <div class="fc-node"><button class="fc-btn" id="fc4" onclick="goStep(4)">5. ILP Optimizer</button><div class="fc-sub">assign trips</div></div>
+  <div class="fc-arrow"></div>
+  <div class="fc-node"><button class="fc-btn" id="fc5" onclick="goStep(5)">6. Outcome</button><div class="fc-sub">before vs after AI</div></div>
+</div>
+<div class="info-box" id="infoBox">
+  <div class="info-step" id="infoStep"></div>
+  <div class="info-headline" id="infoHeadline"></div>
+  <div class="info-sub" id="infoSub"></div>
+</div>
+
+<!-- STEP 0 -->
+<div class="section" id="sec0">
+  <div class="cluster-flow-row">
+    <div>
+      <div class="section-label" style="margin-bottom:10px">What goes in</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:22px">📍</div>
+          <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">Location Type</div><div style="font-size:11px;color:var(--muted)">Airport > MRT > Branch > HDB > Industrial</div></div>
+        </div>
+        <div style="background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:22px">📅</div>
+          <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">Calendar Events</div><div style="font-size:11px;color:var(--muted)">Public holidays, weekends, school breaks</div></div>
+        </div>
+        <div style="background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:22px">📊</div>
+          <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">5-Year History</div><div style="font-size:11px;color:var(--muted)">Daily withdrawal patterns per ATM since 2021</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="algo-box">
+      <div style="font-size:24px;margin-bottom:8px">🤖</div>
+      <div class="algo-title">K-Means Clustering</div>
+      <div class="algo-sub">k = 3 groups</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6">Combines all 3 factors to assign each ATM to a demand group</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div>
+      <div class="section-label" style="margin-bottom:10px">Result</div>
+      <div class="cluster-chips">
+        <div class="chip high"><div class="chip-dot"></div><div><div class="chip-label">High Traffic</div><div style="font-size:11px;color:var(--muted)">Drains fast · refill early</div></div><div class="chip-atms">A009, A017</div></div>
+        <div class="chip mid"><div class="chip-dot"></div><div><div class="chip-label">Mid Traffic</div><div style="font-size:11px;color:var(--muted)">Moderate drain</div></div><div class="chip-atms">A001, A003</div></div>
+        <div class="chip low"><div class="chip-dot"></div><div><div class="chip-label">Low Traffic</div><div style="font-size:11px;color:var(--muted)">Slow drain</div></div><div class="chip-atms">A015</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section-label">Location multipliers — how busy each site is relative to baseline</div>
+  <table class="loc-table">
+    <thead><tr><th>ATM</th><th>Location</th><th>Site Type</th><th>Locality Multiplier</th><th>Cluster</th></tr></thead>
+    <tbody>
+      <tr><td><span class="atm-id">A009</span></td><td>Changi Airport T3</td><td style="color:var(--muted)">Airport</td><td><span class="pill pill-r">1.50× — Highest</span></td><td><span class="pill pill-r">High</span></td></tr>
+      <tr><td><span class="atm-id">A017</span></td><td>Toa Payoh MRT</td><td style="color:var(--muted)">MRT / CBD</td><td><span class="pill pill-a">1.30×</span></td><td><span class="pill pill-r">High</span></td></tr>
+      <tr><td><span class="atm-id">A001</span></td><td>UOB Branch</td><td style="color:var(--muted)">Branch</td><td><span class="pill pill-b">1.10×</span></td><td><span class="pill pill-a">Mid</span></td></tr>
+      <tr><td><span class="atm-id">A003</span></td><td>Bukit Batok HDB</td><td style="color:var(--muted)">HDB Heartland</td><td><span class="pill pill-g">0.90×</span></td><td><span class="pill pill-a">Mid</span></td></tr>
+      <tr><td><span class="atm-id">A015</span></td><td>Jurong Industrial</td><td style="color:var(--muted)">Industrial</td><td><span class="pill pill-m">0.70× — Lowest</span></td><td><span class="pill pill-g">Low</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- STEP 1 -->
+<div class="section" id="sec1">
+  <div class="wt-intro">
+    Each cluster serves <strong>two roles in the system</strong>:<br>
+    <strong>① Importance weight</strong> — fed into XGBoost as a feature. High-traffic clusters get a higher weight, so the model prioritises their patterns when learning to forecast.<br>
+    <strong>② Refill threshold</strong> — the cash % that triggers a replenishment trip. Derived from each cluster's average daily drain rate (velocity) × service cycle + safety buffer. Higher-drain clusters trigger earlier.
+  </div>
+  <div class="thresh-grid">
+    <div class="tc high">
+      <div class="tc-label">High Traffic</div>
+      <div class="tc-weight">Model weight: 1.3×–1.5×</div>
+      <div class="tc-pct">35%</div>
+      <div class="tc-rule">Refill trigger</div>
+      <div class="tc-dollar">Below $134,400</div>
+      <div class="tc-velocity">Drains ~10%/day<br>10% × 2.5d service cycle + 10% buffer = 35%</div>
+      <div class="tc-atms">A009 · A017</div>
+    </div>
+    <div class="tc mid">
+      <div class="tc-label">Mid Traffic</div>
+      <div class="tc-weight">Model weight: 0.9×–1.1×</div>
+      <div class="tc-pct">30%</div>
+      <div class="tc-rule">Refill trigger</div>
+      <div class="tc-dollar">Below $115,200</div>
+      <div class="tc-velocity">Drains ~5%/day<br>5% × 4d service cycle + 10% buffer = 30%</div>
+      <div class="tc-atms">A001 · A003</div>
+    </div>
+    <div class="tc low">
+      <div class="tc-label">Low Traffic</div>
+      <div class="tc-weight">Model weight: 0.7×</div>
+      <div class="tc-pct">25%</div>
+      <div class="tc-rule">Refill trigger</div>
+      <div class="tc-dollar">Below $96,000</div>
+      <div class="tc-velocity">Drains ~1.5%/day<br>1.5% × 10d service cycle + 10% buffer = 25%</div>
+      <div class="tc-atms">A015</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="section" id="sec2">
+  <div class="section-label" style="margin-bottom:10px">XGBoost input features</div>
+  <div class="xgb-features">
+    <div class="feat"><div class="feat-icon">📊</div><div class="feat-name">5-Year Txn History</div>withdrawal patterns per ATM</div>
+    <div class="feat"><div class="feat-icon">📅</div><div class="feat-name">Day of Week + Calendar</div>payday, holiday, CNY flags</div>
+    <div class="feat"><div class="feat-icon">🏷️</div><div class="feat-name">Cluster Type + Weight</div>High / Mid / Low importance</div>
+    <div class="feat ai-feat"><div class="feat-icon">⚡</div><div class="feat-name">AI Event Multiplier ★</div>unstructured signal boost</div>
+  </div>
+  <div class="ai-alert">
+    <div class="ai-hdr">
+      <div class="ai-icon">🚨</div>
+      <div>
+        <div class="ai-title">AI Layer detected demand signals the standard model would miss</div>
+        <div class="ai-sub">LLM weekly scan · 07 May 2026 · Labour Day + Long Weekend</div>
+      </div>
+    </div>
+    <div class="ai-signals">
+      <div class="ai-sig-card"><span>✈️</span> Changi T3 travel surge — school holidays begin</div>
+      <div class="ai-sig-card"><span>💰</span> Weekend cash preference spike reported</div>
+      <div class="ai-sig-card"><span>🏘️</span> HDB residents drawing holiday cash early</div>
+      <div class="ai-sig-card"><span>📍</span> Pasar malam near A017 driving evening footfall</div>
+    </div>
+  </div>
+  <div class="llm-box">
+    <div class="llm-title">⚡ Translating signals into per-ATM demand multipliers...</div>
+    <div id="llLines">
+      <div class="ll" id="ll0"><div class="dot"></div>Reading news feeds, social signals, event calendars for tomorrow...</div>
+      <div class="ll hit" id="ll1"><div class="dot"></div>A009 Airport — Labour Day travel surge + school hols → multiplier 1.77× (base $215k → AI-adjusted $380k)</div>
+      <div class="ll hit" id="ll2"><div class="dot"></div>A017 MRT — pasar malam footfall, weekend surge → multiplier 1.73× (base $185k → AI-adjusted $320k)</div>
+      <div class="ll hit" id="ll3"><div class="dot"></div>A001 Branch — holiday cash demand → multiplier 1.55× (base $100k → AI-adjusted $155k)</div>
+      <div class="ll hit" id="ll4"><div class="dot"></div>A003 HDB — residents drawing long-weekend cash → multiplier 2.13× (base $75k → AI-adjusted $160k)</div>
+      <div class="ll ok" id="ll5"><div class="dot"></div>A015 Industrial — workforce reduced on holiday → no change 1.0× (stays $22k)</div>
+      <div class="ll ok" id="ll6"><div class="dot"></div>Multipliers applied to XGBoost output → AI-adjusted forecasts ready for ILP trip decision ✓</div>
+    </div>
+  </div>
+  <div class="atm-grid" id="ag2"></div>
+</div>
+
+<!-- STEP 3 -->
+<div class="section" id="sec3">
+  <div class="formula-box">
+    <div>
+      <div class="formula-eq">Projected Cash = Current Balance <span>− AI-Adjusted Forecast</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">ILP checks: if Projected Cash &lt; Cluster Threshold → trip flagged · ILP risk score assigns P0 / P1 / P2 window</div>
+    </div>
+  </div>
+  <div class="window-defs">
+    <div class="wd p0"><div class="wd-name">P0 — Urgent</div><div class="wd-window">Highest risk score</div><div class="wd-desc">Midnight vendor window</div></div>
+    <div class="wd p1"><div class="wd-name">P1 — Morning</div><div class="wd-window">High risk score</div><div class="wd-desc">Standard morning window</div></div>
+    <div class="wd p2"><div class="wd-name">P2 — Afternoon</div><div class="wd-window">Moderate risk score</div><div class="wd-desc">Afternoon window · lowest urgency</div></div>
+  </div>
+  <div class="atm-grid" id="ag3"></div>
+</div>
+
+<!-- STEP 4 -->
+<div class="section" id="sec4">
+  <div class="ilp-layout">
+    <div class="ilp-constraints">
+      <div class="ilp-c-title">Hard Constraints</div>
+      <div class="ilp-c-item"><span class="ilp-c-icon">🔢</span><span>Total trips ≤ 190 per day</span></div>
+      <div class="ilp-c-item"><span class="ilp-c-icon">1️⃣</span><span>Max 1 trip per ATM per day</span></div>
+      <div class="ilp-c-item"><span class="ilp-c-icon">⏰</span><span>Priority mix: 65% P0 · 25% P1 · 10% P2</span></div>
+      <div class="ilp-c-item"><span class="ilp-c-icon">📅</span><span>14-day rule: force trip if unreplenished 14 days</span></div>
+      <div class="ilp-c-item"><span class="ilp-c-icon">🎯</span><span>Objective: minimise trips while protecting high-risk ATMs</span></div>
+    </div>
+    <div>
+      <div class="fork-note">ILP runs twice — once with base XGBoost, once with AI-adjusted forecast.<br><strong>Select a scenario to see what schedule is produced.</strong></div>
+      <div class="paths">
+        <div class="pc pA" id="pathA" onclick="choosePath('A')">
+          <div class="pt">❌ Without AI — Base XGBoost Only</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Standard Labour Day flag · historical patterns only · no unstructured signals</div>
+          <div class="path-hero">3</div>
+          <div class="path-hero-label">trips scheduled · 2 ATMs will run dry</div>
+          <div class="path-items">
+            <div class="path-item"><span class="pi-icon">❌</span>A009: P1 — risk score insufficient for P0, vendor arrives too late</div>
+            <div class="path-item"><span class="pi-icon">❌</span>A003: not triggered — demand underestimated, runs out 9pm</div>
+            <div class="path-item"><span class="pi-icon">🚨</span>2 emergency ad-hoc trips needed after hours</div>
+          </div>
+        </div>
+        <div class="pc pB" id="pathB" onclick="choosePath('B')">
+          <div class="pt">✅ With AI — XGBoost + Event Signals ★</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">AI multipliers 1.55×–2.13× applied before ILP runs</div>
+          <div class="path-hero">5</div>
+          <div class="path-hero-label">trips scheduled · 0 ATMs run dry</div>
+          <div class="path-items">
+            <div class="path-item"><span class="pi-icon">✅</span>A009: upgraded P1 → P0 — refilled at midnight before surge ✓</span></div>
+            <div class="path-item"><span class="pi-icon">✅</span>A003: now triggered, added as P2 before evening peak ✓</div>
+            <div class="path-item"><span class="pi-icon">✅</span>0 emergency ad-hoc trips · 0 customers turned away</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="atm-grid" id="ag4"></div>
+</div>
+
+<!-- STEP 5 -->
+<div class="section" id="sec5">
+  <div class="outcome-kpis">
+    <div class="kpi">
+      <div class="kpi-label">ATMs that ran out</div>
+      <div class="kpi-vals">
+        <div class="kpi-val bad"><div class="kpi-num">2</div><div class="kpi-sub">Without AI</div></div>
+        <div class="kpi-sep">→</div>
+        <div class="kpi-val good"><div class="kpi-num">0</div><div class="kpi-sub">With AI</div></div>
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Emergency ad-hoc trips</div>
+      <div class="kpi-vals">
+        <div class="kpi-val bad"><div class="kpi-num">2</div><div class="kpi-sub">Without AI</div></div>
+        <div class="kpi-sep">→</div>
+        <div class="kpi-val good"><div class="kpi-num">0</div><div class="kpi-sub">With AI</div></div>
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Customers affected</div>
+      <div class="kpi-vals">
+        <div class="kpi-val bad"><div class="kpi-num">400+</div><div class="kpi-sub">Without AI</div></div>
+        <div class="kpi-sep">→</div>
+        <div class="kpi-val good"><div class="kpi-num">0</div><div class="kpi-sub">With AI</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="outcome-grid">
+    <div class="oc ocA">
+      <div class="oc-title">❌ Without AI — Base XGBoost Only</div>
+      <div class="or"><span class="ok">Scheduled trips</span><span class="ov">3</span></div>
+      <div class="or"><span class="ok">A009 refill window</span><span class="ov">P1 — arrives 10am (too late)</span></div>
+      <div class="or"><span class="ok">A003 scheduled</span><span class="ov">No — demand underestimated</span></div>
+      <div class="or"><span class="ok">A009 cash-out</span><span class="ov">YES — 6am surge</span></div>
+      <div class="or"><span class="ok">A003 cash-out</span><span class="ov">YES — 9pm evening peak</span></div>
+      <div class="or"><span class="ok">Emergency ad-hoc trips</span><span class="ov">2 call-outs</span></div>
+      <div class="or"><span class="ok">Customers turned away</span><span class="ov">~400+ on public holiday</span></div>
+    </div>
+    <div class="oc ocB">
+      <div class="oc-title">✅ With AI — XGBoost + Event Signals</div>
+      <div class="or"><span class="ok">Scheduled trips</span><span class="ov">5</span></div>
+      <div class="or"><span class="ok">A009 refill window</span><span class="ov">P0 — midnight top-up ✓</span></div>
+      <div class="or"><span class="ok">A003 scheduled</span><span class="ov">Yes — P2 added ✓</span></div>
+      <div class="or"><span class="ok">A009 cash-out</span><span class="ov">None ✓</span></div>
+      <div class="or"><span class="ok">A003 cash-out</span><span class="ov">None ✓</span></div>
+      <div class="or"><span class="ok">Emergency ad-hoc trips</span><span class="ov">0 ✓</span></div>
+      <div class="or"><span class="ok">Customers turned away</span><span class="ov">0 ✓</span></div>
+    </div>
+  </div>
+  <div class="verdict">
+    <div class="v-big">2 extra planned trips → 0 cash-outs on Labour Day</div>
+    <p>The AI layer added <strong>2 planned trips</strong> and eliminated <strong>2 emergency ad-hoc trips</strong>. Net cost: zero — same number of total vendor visits, zero customers turned away on a public holiday. This is the gap that historical patterns alone will always miss.</p>
+  </div>
+  <div class="atm-grid" id="ag5" style="margin-top:20px"></div>
+</div>
+
+<div class="nav">
+  <button class="btn btn-s" id="btnPrev" onclick="prev()" disabled>← Back</button>
+  <button class="btn btn-p" id="btnNext" onclick="next()">Next →</button>
+</div>
+</div>
+
+<script>
+const ATMS=[
+  {id:'A009',loc:'Airport',cluster:'High',cc:'c-high',chipCls:'chip-r',locMult:1.50,aiMult:1.77,cap:384000,th:35,cash:160000,predB:215000,predAI:380000,brchB:10,brchAI:2,winB:'P1',winAI:'P0',rule:false,sig:'Travel surge + school hols',lastRefill:3},
+  {id:'A017',loc:'MRT Station',cluster:'High',cc:'c-high',chipCls:'chip-r',locMult:1.30,aiMult:1.73,cap:504000,th:35,cash:280000,predB:185000,predAI:320000,brchB:11,brchAI:8,winB:'P1',winAI:'P1',rule:false,sig:'Pasar malam nearby',lastRefill:5},
+  {id:'A001',loc:'Branch',cluster:'Mid',cc:'c-mid',chipCls:'chip-a',locMult:1.10,aiMult:1.55,cap:384000,th:30,cash:180000,predB:100000,predAI:155000,brchB:14,brchAI:12,winB:'P2',winAI:'P2',rule:false,sig:'Holiday cash demand',lastRefill:8},
+  {id:'A003',loc:'HDB Heartland',cluster:'Mid',cc:'c-mid',chipCls:'chip-a',locMult:0.90,aiMult:2.13,cap:384000,th:30,cash:320000,predB:75000,predAI:160000,brchB:null,brchAI:20,winB:'N',winAI:'P2',rule:false,sig:'Weekend cash spike',lastRefill:4},
+  {id:'A015',loc:'Industrial',cluster:'Low',cc:'c-low',chipCls:'chip-g',locMult:0.70,aiMult:1.0,cap:384000,th:25,cash:310000,predB:22000,predAI:25000,brchB:null,brchAI:null,winB:'P1',winAI:'P1',rule:true,sig:'No change',lastRefill:14}
+];
+
+const INFO=[
+  {step:'Step 1 of 6 — ATM Clustering',headline:'ATMs are grouped by how busy they are.',sub:'Location type, calendar signals, and 5 years of withdrawal history feed into K-Means (k=3). Each ATM lands in High, Mid, or Low traffic — which shapes the threshold and importance weight downstream.',ai:false},
+  {step:'Step 2 of 6 — Weightages + Thresholds',headline:'Each cluster gets an importance weight and a refill trigger.',sub:'The weight tells XGBoost how much to prioritise patterns from that cluster. The threshold is derived from velocity — how fast that cluster drains on average. Higher-drain clusters trigger earlier to avoid stockouts.',ai:false},
+  {step:'Step 3 of 6 — XGBoost Forecast + AI Layer ★',headline:'The AI layer spots demand signals the standard model would never catch.',sub:'Cluster type, locality weight, calendar flags, and 5-year history go into XGBoost. The AI layer separately scans unstructured sources — news, social signals, events — and applies per-ATM multipliers to the base forecast before the ILP trip decision runs.',ai:true},
+  {step:'Step 4 of 6 — Trip Decision',headline:'ILP compares projected cash against each cluster\'s threshold to flag trips.',sub:'Projected cash = current balance − AI-adjusted forecast. The ILP scores each ATM across all priority windows based on predicted cash remaining, cluster type, and days since replenishment. The highest-risk window is assigned, subject to all business constraints.',ai:false},
+  {step:'Step 5 of 6 — ILP Optimizer',headline:'The ILP assigns trips within all business constraints.',sub:'Run it with base XGBoost → 3 trips, 2 cash-outs. Run it with AI-adjusted forecast → 5 trips, 0 cash-outs. Select a scenario to see what each produces.',ai:true},
+  {step:'Step 6 of 6 — Outcome',headline:'The AI layer prevented 2 ATMs from running dry on Labour Day.',sub:'2 extra planned trips replaced 2 emergency ad-hoc trips. Net vendor visits: same. Net customer impact: zero. This is the gap that historical patterns alone will always miss.',ai:true}
+];
+
+let step=0,path=null;
+const MAX=5;
+
+function fmtk(n){return n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n}
+function pct(v,c){return Math.round(v/c*100)}
+
+function badge(w,rule,upgraded){
+  const labels={P0:'P0 — Urgent',P1:'P1 — Morning',P2:'P2 — Afternoon',N:'Not scheduled'};
+  if(rule&&w==='P1')return'<span class="bdg bRULE">P1 — 14-day rule</span>';
+  let b=`<span class="bdg b${w}">${labels[w]||w}</span>`;
+  if(upgraded)b+=`<span class="bUp">↑ upgraded by AI layer</span>`;
+  return b;
+}
+
+function card(a,showWeight,showForecast,showDepletion,pathSet,outcomeOn){
+  const thresh=Math.round(a.cap*a.th/100);
+  const cpct=pct(a.cash,a.cap);
+  const levelColor=cpct>50?'var(--green)':cpct>a.th?'var(--amber)':'var(--red)';
+  const useBase=pathSet&&path==='A';
+  const pred=useBase?a.predB:a.predAI;
+  const win=useBase?a.winB:a.winAI;
+  const rem=a.cash-pred;
+  const projPct=Math.max(0,pct(rem,a.cap));
+  const projColor=rem>thresh?'var(--green)':'var(--red)';
+  const cashout=outcomeOn&&path==='A'&&(a.id==='A009'||a.id==='A003');
+  const upgraded=pathSet&&path==='B'&&a.winAI!==a.winB;
+
+  let cls=`ac ${a.cc}`;
+  if(cashout)cls+=' cashout';
+  if(showForecast&&!showDepletion&&!pathSet&&a.aiMult>1.3)cls+=' flagged';
+
+  let h=`<div class="${cls}">
+    <div class="card-top">
+      <div class="ac-id">${a.id}</div>
+      <div class="cluster-chip ${a.chipCls}">${a.cluster}</div>
+    </div>
+    <div class="ac-loc">${a.loc}</div>`;
+
+  if(showDepletion||pathSet){
+    h+=`<div style="font-size:10px;color:var(--muted);margin-bottom:6px">Last refill: ${a.lastRefill}d ago</div>`;
+  }
+
+  if(showWeight){
+    h+=`<div class="cash-hero" style="color:${levelColor}">${cpct}%</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:3px">cash on hand today</div>
+    <div class="bar-wrap">
+      <div class="cash-bar-wrap"><div class="cash-bar-fill" style="width:${cpct}%;background:${levelColor}"></div></div>
+      <div class="thresh-line" style="left:${a.th}%"></div>
+    </div>
+    <div class="cash-trigger">Trigger: ${a.th}% (${fmtk(thresh)}) · Locality weight: ${a.locMult}×</div>`;
+  }
+
+  if(showForecast){
+    h+=`<div class="div"></div>
+    <div class="ac-row"><span class="ac-lbl">Base XGBoost</span><span class="ac-val" style="color:var(--muted)">−${fmtk(a.predB)}</span></div>
+    <div class="ac-row"><span class="ac-lbl">AI multiplier</span><span class="ac-val va">${a.aiMult}×</span></div>
+    <div class="ac-row"><span class="ac-lbl">AI-adjusted</span><span class="ac-val vr">−${fmtk(a.predAI)}</span></div>
+    ${a.aiMult>1.3?`<div class="ai-badge">⚡ ${a.sig}</div>`:'<div style="font-size:10px;color:var(--muted);margin-top:3px">No AI signal</div>'}`;
+  }
+
+  if(showDepletion){
+    const tripTxt=a.rule?'14-day rule — trip forced':win&&win!=='N'?`Risk score → ${win} assigned`:'Stays above threshold ✓';
+    const tripCls=a.rule?'vp':win&&win!=='N'?'vr':'vg';
+    h+=`<div class="div"></div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:3px">Projected after tomorrow's withdrawals</div>
+    <div class="bar-wrap">
+      <div class="cash-bar-wrap"><div class="cash-bar-fill" style="width:${projPct}%;background:${projColor}"></div></div>
+      <div class="thresh-line" style="left:${a.th}%"></div>
+    </div>
+    <div class="ac-val ${tripCls}" style="font-size:10px;margin-top:3px;display:block">${tripTxt}</div>`;
+    if(cashout){
+      h+=`<span class="bdg bCO">⚠ CASH-OUT</span>`;
+    } else {
+      h+=badge(win,a.rule,upgraded);
+    }
+  }
+
+  return h+'</div>';
+}
+
+function renderGrid(id,showWeight,showForecast,showDepletion,pathSet,outcomeOn){
+  const el=document.getElementById(id);
+  if(el)el.innerHTML=ATMS.map(a=>card(a,showWeight,showForecast,showDepletion,pathSet,outcomeOn)).join('');
+}
+
+function animateLLM(){
+  document.querySelectorAll('#llLines .ll').forEach(l=>l.classList.remove('on'));
+  if(step!==2)return;
+  document.querySelectorAll('#llLines .ll').forEach((l,i)=>setTimeout(()=>l.classList.add('on'),i*300));
+}
+
+function updateUI(){
+  const info=INFO[step];
+  document.getElementById('infoStep').textContent=info.step;
+  document.getElementById('infoHeadline').textContent=info.headline;
+  document.getElementById('infoSub').textContent=info.sub;
+  document.getElementById('infoBox').className='info-box'+(info.ai?' ai-mode':'');
+
+  for(let i=0;i<=MAX;i++){
+    const s=document.getElementById('sec'+i);
+    if(s)s.className='section'+(i===step?' on':'');
+    const b=document.getElementById('fc'+i);
+    b.className=b.className.replace(/\s*(active|done)/g,'').trim();
+    if(b.id==='fc2')b.className='fc-btn ai-node';
+    else b.className='fc-btn';
+    if(i<step)b.className+=' done';
+    else if(i===step)b.className+=' active';
+  }
+
+  if(step===2)animateLLM();
+
+  // Step 5 only unlocked after path chosen
+  document.getElementById('fc5').disabled=!path&&step<4;
+
+  const nb=document.getElementById('btnNext');
+  document.getElementById('btnPrev').disabled=step===0;
+  if(step===4&&!path){
+    nb.disabled=true;
+    nb.textContent='Select a scenario above →';
+  } else if(step===MAX){
+    nb.disabled=true;
+    nb.textContent='Complete ✓';
+  } else {
+    nb.disabled=false;
+    nb.textContent='Next →';
+  }
+
+  // Render grids for each step
+  renderGrid('ag2',true,true,false,false,false);   // Step 2: weight + forecast
+  renderGrid('ag3',true,false,true,false,false);   // Step 3: weight + AI depletion (always AI at this point)
+  renderGrid('ag4',true,false,true,true,false);    // Step 4: ILP path-dependent
+  renderGrid('ag5',true,false,true,true,true);     // Step 5: outcome + cashout
+}
+
+function choosePath(p){
+  path=p;
+  document.getElementById('pathA').classList.toggle('sel',p==='A');
+  document.getElementById('pathB').classList.toggle('sel',p==='B');
+  if(step===4){
+    document.getElementById('btnNext').disabled=false;
+    document.getElementById('btnNext').textContent='Next →';
+  }
+  document.getElementById('fc5').disabled=false;
+  renderGrid('ag4',true,false,true,true,false);
+  renderGrid('ag5',true,false,true,true,true);
+}
+
+function goStep(n){
+  if(n===5&&!path)return;
+  step=n;
+  updateUI();
+}
+function next(){if(step<MAX){step++;updateUI()}}
+function prev(){if(step>0){step--;updateUI()}}
+
+updateUI();
+</script>
+</body>
+</html>

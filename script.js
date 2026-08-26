@@ -29,7 +29,7 @@ const projects = [
     role:"System design, geospatial analysis, full-stack build and deployment",
     result:"34% route comfort improvement; awarded 1st place among all teams",
     tech:"Python · OSMnx · GeoPandas · Gemini · Hugging Face Spaces · Render · Telegram Bot API",
-    images:["Route comparison screenshot","Award photo"],
+    images:["Impact & routing overview","Award photo"],
     links:[
       {t:"Web app ↗",u:"https://thermal-optimizers-coolride-engine.hf.space/"},
       {t:"Telegram bot ↗",u:"https://t.me/coolride_bot"},
@@ -50,8 +50,27 @@ const projects = [
     role:"Automation design, AI-assisted tooling, verification framework",
     result:"Eliminated manual re-entry for hundreds of requirement updates; closed an untested edge-case gap",
     tech:"Python · Agentic AI · IBM DOORS DNG",
-    images:["Sanitized workflow diagram (check with company)"],
+    images:["Team at Aumovio"],
     links:[]
+  },
+  {
+    id:"atmreplenishment", tags:["ai","data"], cat:"AI & ML",
+    date:"11–15 May 2026", context:"UOB × SUTD DAI Signature Master Class",
+    title:"ATM Replenishment Simulation — AI event signals for cash forecasting",
+    impact:"An interactive simulation showing how one AI signal layer took a bank's ATM network from 2 stockouts to 0 on a public holiday.",
+    stat:"0", statCaption:"ATMs ran dry with the AI layer, vs 2 without it",
+    body:[
+      "Built for UOB's DAI Signature Master Class on AI in banking, this project models how a bank decides which ATMs to refill and when. ATMs are clustered by traffic with K-Means (location type, calendar events, 5 years of withdrawal history), each cluster gets an importance weight and a refill threshold derived from its cash-drain velocity, and an XGBoost model forecasts next-day demand per ATM.",
+      "The key layer sits on top: an LLM reads unstructured signals — news, events, local context — to catch demand spikes historical data alone would miss, like a Labour Day travel surge at Changi or a pasar malam pulling evening withdrawals near a suburban MRT. Feeding those AI-adjusted forecasts into an ILP trip optimizer changed the simulated schedule from 3 trips with 2 ATMs running dry to 5 trips with zero stockouts and zero customers turned away, for the same net vendor visits once emergency call-outs are counted."
+    ],
+    role:"System design, forecasting pipeline, AI signal layer, ILP scheduling logic",
+    result:"Simulated Labour Day scenario: 2 stockouts and 400+ affected customers eliminated for the same net vendor trips",
+    tech:"Python · K-Means · XGBoost · Integer Linear Programming · LLM event-signal extraction",
+    images:["UOB × SUTD certificate of completion"],
+    links:[
+      {t:"Live simulation ↗",u:"demos/atm-replenishment.html"},
+      {t:"Presentation ↗",u:"https://canva.link/lp5s0953ch8s8uf"}
+    ]
   },
   {
     id:"databusters", tags:["data","ai"], cat:"Data",
@@ -66,8 +85,8 @@ const projects = [
     role:"Feature engineering, model development, dashboard build",
     result:"MAE reduced to 1.26 minutes across 559 services",
     tech:"Python · LightGBM · LTA DataMall APIs · Streamlit",
-    images:["Dashboard screenshot","Model results chart"],
-    links:[{t:"Dashboard ↗",u:"#"},{t:"Report ↗",u:"#"}]
+    images:["Dashboard screenshot"],
+    links:[{t:"Presentation ↗",u:"https://canva.link/rx71uwzddhv3dy0"}]
   },
   {
     id:"caretech", tags:["ai","design","research"], cat:"Design & Hardware",
@@ -82,8 +101,8 @@ const projects = [
     role:"User research lead, ML calibration pipeline",
     result:"Research-backed device design; improved movement-tracking accuracy",
     tech:"ML calibration · Wearable sensors · Clinical user research",
-    images:["Presentation slide","Device concept"],
-    links:[{t:"Presentation ↗",u:"#"}]
+    images:["Presentation slide"],
+    links:[{t:"Presentation ↗",u:"https://canva.link/ue89oz5tgt2szo0"}]
   },
   {
     id:"signify", tags:["ai","fullstack","design"], cat:"AI & ML",
