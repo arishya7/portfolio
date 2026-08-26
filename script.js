@@ -51,7 +51,7 @@ const projects = [
     role:"Automation design, AI-assisted tooling, verification framework",
     result:"Eliminated manual re-entry for hundreds of requirement updates; closed an untested edge-case gap",
     tech:"Python · Agentic AI · IBM DOORS DNG",
-    images:["Team at Aumovio","Automation tool","Compare-and-Update pipeline output"],
+    images:["Team photo","Automation tool","Pipeline output"],
     links:[]
   },
   {
@@ -67,7 +67,7 @@ const projects = [
     role:"System design, forecasting pipeline, AI signal layer, ILP scheduling logic",
     result:"Simulated Labour Day scenario: 2 stockouts and 400+ affected customers eliminated for the same net vendor trips",
     tech:"Python · K-Means · XGBoost · Integer Linear Programming · LLM event-signal extraction",
-    images:["UOB × SUTD certificate of completion"],
+    images:["UOB × SUTD certificate"],
     links:[
       {t:"Live simulation ↗",u:"demos/atm-replenishment.html"},
       {t:"Presentation ↗",u:"https://canva.link/lp5s0953ch8s8uf"}
@@ -134,7 +134,7 @@ const projects = [
     role:"Evaluation framework design, benchmarking, analysis",
     result:"Cross-model benchmark across 9 quality dimensions",
     tech:"Python · Prompt engineering · LLM evaluation",
-    images:["Evaluation matrix screenshot"],
+    images:["Evaluation matrix"],
     links:[{t:"Evaluation sheet ↗",u:"https://docs.google.com/spreadsheets/d/1iL055C8Z-NqJM7DxXY83hNJMCp3mKwY9/edit?usp=sharing&ouid=113424592686393838356&rtpof=true&sd=true"}]
   },
   {
@@ -166,7 +166,7 @@ const projects = [
     role:"Scraping pipeline, backend build, deployment",
     result:"Live dashboard consolidating influencer data across platforms for the marketing team",
     tech:"Streamlit · Python · FastAPI · MySQL · Docker · Playwright · Beautiful Soup · AgentQL · Apify",
-    images:["Dashboard screenshot","Influencer profile view"],
+    images:["Dashboard screenshot","Login screen"],
     links:[{t:"Live dashboard ↗",u:"http://mummysmarket.synology.me:8501/"}]
   },
   {
@@ -181,7 +181,7 @@ const projects = [
     role:"System architecture, full-stack development, testing",
     result:"Reliable end-to-end booking workflows, tested at unit, integration and system level",
     tech:"React · Node.js · Express · SQL · Ascenda API · REST APIs · UML",
-    images:["Room details screenshot","Hotel details screenshot"],
+    images:["Room details","Hotel details"],
     links:[
       {t:"Presentation ↗",u:"https://www.canva.com/design/DAGv3n0gUm4/X02pQJujENSV5RXZrWwR-g/view?utm_content=DAGv3n0gUm4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h46661a483d"},
       {t:"Demo video ↗",u:"https://youtu.be/QTGqpzzO-40"}
@@ -199,7 +199,7 @@ const projects = [
     role:"Prototype build, pitching, UI/UX",
     result:"Working physical prototype, pitched end to end",
     tech:"Bubble.io · Prototyping · Pitching · Video Editing · UI/UX",
-    images:["Web app screenshot"],
+    images:["Web app"],
     links:[
       {t:"Pitch video ↗",u:"https://youtu.be/OdO8izkvzos"},
       {t:"Demo video ↗",u:"https://youtu.be/vo0aa_Ro530"},
@@ -260,7 +260,7 @@ document.querySelectorAll('.chip').forEach(chip=>{
 /* ---------------- Project detail render ---------------- */
 function renderProject(p){
   const gallery = p.images.map((label,i)=>
-    imgSlot(`images/projects/${p.id}-${i+1}.jpg`, label, 'gallery-item')
+    `<div class="gallery-cell">${imgSlot(`images/projects/${p.id}-${i+1}.jpg`, label, 'gallery-item')}<span class="imgcap">${label}</span></div>`
   ).join('');
   const links = p.links.map(l=>`<a class="btn" href="${l.u}" target="_blank" rel="noopener">${l.t}</a>`).join('');
   document.getElementById('projectContent').innerHTML = `

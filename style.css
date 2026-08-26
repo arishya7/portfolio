@@ -224,7 +224,8 @@ nav .links a.active{color:var(--accent);border-bottom-color:var(--accent)}
 .cocu{padding:26px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:190px 1fr;gap:20px}
 .cocu:last-of-type{border-bottom:none}
 @media(max-width:640px){.cocu{grid-template-columns:1fr;gap:6px}}
-.cocu .imggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;max-width:620px}
+.imgcap{font-family:'Archivo',sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-align:center;margin-top:6px}
+.cocu .imggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 12px;margin-top:14px;max-width:620px}
 @media(max-width:480px){.cocu .imggrid{grid-template-columns:1fr}}
 .cocu .imgph{
   aspect-ratio:16/10;background:#F0EDE6;border:1px solid var(--rule);
