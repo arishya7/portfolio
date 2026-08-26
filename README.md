@@ -49,7 +49,6 @@ Numbered in the order they should appear, per project:
 ## Still-placeholder links
 
 These currently point to `#` and need real URLs — give them to Claude to wire up, or edit directly:
-- Blog link (nav actions + footer) — Notion blog URL
 - Project links inside `script.js` → each project's `links: [...]` array (live app / demo / repo / report URLs)
 
 ## Local preview
