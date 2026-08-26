@@ -33,6 +33,7 @@ const projects = [
     links:[
       {t:"Web app ↗",u:"https://thermal-optimizers-coolride-engine.hf.space/"},
       {t:"Telegram bot ↗",u:"https://t.me/coolride_bot"},
+      {t:"Telegram bot backend ↗",u:"https://huggingface.co/spaces/arish7/coolride-telegram"},
       {t:"GitHub ↗",u:"https://github.com/arishya7/Cool_Route_prototype.git"},
       {t:"Presentation ↗",u:"https://www.canva.com/design/DAG8zNFJ5Bc/JY-JbZnh5yR6hQkbWCoxpA/edit?utm_content=DAG8zNFJ5Bc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"}
     ]
