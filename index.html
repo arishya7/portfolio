@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arishya Jindal — Computer Science × Design × AI</title>
+<meta name="description" content="Arishya Jindal — CS & Design undergraduate at SUTD (AI minor). I build intelligent systems and data-driven products with measurable outcomes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;0,800;1,300&family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#/work">Arishya Jindal</a>
+    <div class="links">
+      <a href="#/work" data-nav="work">Work</a>
+      <a href="#/experience" data-nav="experience">Experience</a>
+      <a href="#/cocurricular" data-nav="cocurricular">Co-Curricular</a>
+      <a href="#/awards" data-nav="awards">Awards</a>
+      <a href="#/about" data-nav="about">About</a>
+      <a href="#contactfooter" data-nav="contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ WORK (home) ============ -->
+<div class="view" id="view-work">
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow lbl">SUTD · Class of 2027 · Singapore</p>
+      <h1>Arishya Jindal</h1>
+      <p class="discipline">Computer Science × Design × Artificial Intelligence</p>
+      <p class="statement">I build systems that turn tedious, manual work into <b>automated, reliable pipelines</b> — and data into <b>decisions people can act on</b>.</p>
+      <p class="current"><span class="dot">●</span>&nbsp; Currently automating requirements engineering at Aumovio.</p>
+      <div class="actions">
+        <!-- Drop your resume PDF at assets/resume.pdf and this link works automatically -->
+        <a class="btn primary" href="assets/resume.pdf" target="_blank" rel="noopener" title="PLACEHOLDER — add assets/resume.pdf">Resume ↓</a>
+        <a class="btn" href="https://www.linkedin.com/in/arishya-j-365aa1293" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn" href="https://github.com/arishya7" target="_blank" rel="noopener">GitHub ↗</a>
+        <!-- PLACEHOLDER — tell Claude your Notion blog URL to fill this in -->
+        <a class="btn" href="#" title="PLACEHOLDER — give Claude your blog URL">Blog ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap worksec">
+    <div class="sec-label lbl">Selected work</div>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="ai">AI &amp; ML</button>
+      <button class="chip" data-filter="data">Data</button>
+      <button class="chip" data-filter="fullstack">Full-Stack</button>
+      <button class="chip" data-filter="design">Design &amp; Hardware</button>
+      <button class="chip" data-filter="research">Research</button>
+      <button class="chip" data-filter="sustain">Sustainability</button>
+    </div>
+    <div class="cards" id="cards"></div>
+  </main>
+</div>
+
+<!-- ============ PROJECT DETAIL ============ -->
+<div class="view" id="view-project">
+  <div class="wrap">
+    <div class="closebar"><button class="closebtn" onclick="location.hash='#/work'">✕ &nbsp;Close</button></div>
+    <div id="projectContent"></div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<div class="view" id="view-about">
+  <div class="wrap">
+    <div class="pagehead">
+      <p class="eyebrow lbl">About</p>
+      <h1>How I work</h1>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>I'm a third-year Computer Science and Design undergraduate at SUTD, minoring in Artificial Intelligence. Most people call me Rish.</p>
+        <p>My projects look varied — transport prediction, medical wearables, automotive requirements, sign language — but they follow one pattern: find the tedious, error-prone or opaque part of a real system, and build something that makes it automatic, measurable or understandable.</p>
+        <p>I care about talking to the people who'll actually use the thing (120+ interviews for CareTech taught me more than any spec document), and about being able to prove the result with a number.</p>
+        <p>Outside of work I run, cycle, and volunteer on sustainability projects — which is also where several of these builds started.</p>
+      </div>
+      <div>
+        <div class="about-photo ph-slot">
+          <img src="images/site/profile.jpg" alt="Add profile photo" loading="lazy" onerror="this.classList.add('ph-broken')">
+          <span class="ph-fallback lbl">+ Add profile photo</span>
+        </div>
+        <div class="threads">
+          <h4 class="lbl">Recurring threads</h4>
+          <ul>
+            <li><b>AI &amp; automation</b> — removing manual work, keeping traceability</li>
+            <li><b>Data</b> — live, messy, multi-source; made useful</li>
+            <li><b>Design</b> — research with real users before building</li>
+            <li><b>Sustainability</b> — climate tech, circular systems</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXPERIENCE ============ -->
+<div class="view" id="view-experience">
+  <div class="wrap">
+    <div class="pagehead">
+      <p class="eyebrow lbl">Experience</p>
+      <h1>Where I've worked</h1>
+    </div>
+
+    <div class="exp">
+      <span class="when">May 2026 – Present</span>
+      <div>
+        <h3>System Requirements Engineer Intern <span class="org">— Aumovio, Singapore</span></h3>
+        <ul>
+          <li>Own end-to-end automation of requirement extraction, verification and change control across 34+ vehicle modules.</li>
+          <li>Designed a Compare-and-Update pipeline syncing verified changes into IBM DOORS DNG, eliminating manual re-entry while preserving traceability.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp">
+      <span class="when">Aug 2025 – Jan 2026</span>
+      <div>
+        <h3>AI &amp; Automation Intern <span class="org">— Mummy's Market, Singapore</span></h3>
+        <ul>
+          <li>Built NLP pipelines and SQL-backed dashboards processing data from 500+ online sources.</li>
+          <li>Gemini-powered validation workflows improved dataset reliability and cut manual QA effort by 70%.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp">
+      <span class="when">Jun – Jul 2024</span>
+      <div>
+        <h3>FinTech Extern <span class="org">— RevRoad, Remote</span></h3>
+        <ul>
+          <li>Analyzed five-year performance datasets and benchmarked 100+ EdTech business models for investment suitability.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CO-CURRICULAR ============ -->
+<div class="view" id="view-cocurricular">
+  <div class="wrap">
+    <div class="pagehead">
+      <p class="eyebrow lbl">Co-Curricular</p>
+      <h1>Clubs &amp; volunteering</h1>
+      <p class="sub">Sustainability work and mentoring outside the classroom — where several of my projects started.</p>
+    </div>
+
+    <div class="cocu">
+      <span class="when lbl" style="color:var(--muted);font-size:11px;padding-top:5px">Feb 2024 – Aug 2025</span>
+      <div>
+        <h3 style="font-weight:800;font-size:19px">Secretary <span class="org" style="color:var(--muted);font-style:italic;font-weight:400;font-size:16px">— Greenprint, SUTD's sustainability club</span></h3>
+        <ul style="list-style:none;margin-top:8px">
+          <li style="font-weight:300;font-size:15.5px;padding:3px 0;max-width:66ch">— Coordinated with the Sustainability Office and faculty to dismantle and recycle 110+ student prototypes across two batch years: 240L of wood, metal and cardboard given a second life.</li>
+          <li style="font-weight:300;font-size:15.5px;padding:3px 0;max-width:66ch">— Ran gardening and cooking workshops, tree planting, kayaking cleanups and scrapyard maintenance; recycled Ang Bao packets into Mid-Autumn Festival lanterns.</li>
+          <li style="font-weight:300;font-size:15.5px;padding:3px 0;max-width:66ch">— Awarded the Sustainability Spirit Award (2025).</li>
+        </ul>
+        <div class="imgph ph-slot">
+          <img src="images/cocurricular/greenprint.jpg" alt="Add Greenprint photo" loading="lazy" onerror="this.classList.add('ph-broken')">
+          <span class="ph-fallback lbl">+ Add Greenprint photo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cocu">
+      <span class="when lbl" style="color:var(--muted);font-size:11px;padding-top:5px">Jun 2024 – Feb 2025</span>
+      <div>
+        <h3 style="font-weight:800;font-size:19px">Design Facilitator &amp; Mentor <span class="org" style="color:var(--muted);font-style:italic;font-weight:400;font-size:16px">— SteamUnity</span></h3>
+        <ul style="list-style:none;margin-top:8px">
+          <li style="font-weight:300;font-size:15.5px;padding:3px 0;max-width:66ch">— Mentored 7 secondary-to-polytechnic students in design skills and sustainability knowledge.</li>
+          <li style="font-weight:300;font-size:15.5px;padding:3px 0;max-width:66ch">— Guided the team through 5 prototype iterations of a single-use plastic solution; selected as 1 of only 5 groups (of 28) to present to DPM Heng Swee Keat.</li>
+        </ul>
+        <div class="imgph ph-slot">
+          <img src="images/cocurricular/steamunity.jpg" alt="Add SteamUnity photo" loading="lazy" onerror="this.classList.add('ph-broken')">
+          <span class="ph-fallback lbl">+ Add SteamUnity photo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ AWARDS ============ -->
+<div class="view" id="view-awards">
+  <div class="wrap">
+    <div class="pagehead">
+      <p class="eyebrow lbl">Recognition</p>
+      <h1>Awards &amp; scholarships</h1>
+    </div>
+
+    <div class="recog">
+      <span class="num">01</span>
+      <div><div class="title">Youth Development for Climate Tech</div><div class="sub">CoolRide — climate-aware navigation</div></div>
+      <span class="place">1st Place · 2026</span>
+    </div>
+    <div class="recog">
+      <span class="num">02</span>
+      <div><div class="title">Singtel Information Systems &amp; Programming Award</div><div class="sub">Signify — computer vision for sign language</div></div>
+      <span class="place">3rd Place · 2025</span>
+    </div>
+    <div class="recog">
+      <span class="num">03</span>
+      <div><div class="title">AT-Capital Sustainability Scholarship</div><div class="sub">Awarded for the duration of study at SUTD</div></div>
+      <span class="place">2023 –</span>
+    </div>
+    <div class="recog">
+      <span class="num">04</span>
+      <div><div class="title">Student Service Excellence Award</div><div class="sub">SUTD</div></div>
+      <span class="place">2025</span>
+    </div>
+    <div class="recog">
+      <span class="num">05</span>
+      <div><div class="title">Sustainability Spirit Award</div><div class="sub">SUTD · Greenprint</div></div>
+      <span class="place">2025</span>
+    </div>
+    <div class="recog">
+      <span class="num">06</span>
+      <div><div class="title">Orientation Excellence Award</div><div class="sub">SUTD</div></div>
+      <span class="place">2025</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER (all pages) ============ -->
+<footer id="contactfooter">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Let's talk.</h2>
+        <p class="fnote">Open to graduate roles from May 2027 — happy to walk through any of this work in detail.</p>
+      </div>
+      <div class="fcontact">
+        <a href="mailto:arishya_jindal@mymail.sutd.edu.sg">arishya_jindal@mymail.sutd.edu.sg</a>
+        <a href="https://www.linkedin.com/in/arishya-j-365aa1293" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/arishya7" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="#" title="PLACEHOLDER — give Claude your blog URL">Blog ↗</a>
+        <a href="assets/resume.pdf" target="_blank" rel="noopener" title="PLACEHOLDER — add assets/resume.pdf">Resume ↓</a>
+      </div>
+    </div>
+    <p class="colophon">Arishya Jindal · Singapore · Set in Abril Fatface, Libre Franklin &amp; Archivo</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
