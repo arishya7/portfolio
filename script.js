@@ -28,9 +28,14 @@ const projects = [
     ],
     role:"System design, geospatial analysis, full-stack build and deployment",
     result:"34% route comfort improvement; awarded 1st place among all teams",
-    tech:"Geospatial analysis · Llama · Hugging Face · Supabase · Telegram Bot API",
+    tech:"Python · OSMnx · GeoPandas · Gemini · Hugging Face Spaces · Render · Telegram Bot API",
     images:["Route comparison screenshot","Award photo"],
-    links:[{t:"Live app ↗",u:"#"},{t:"Demo ↗",u:"#"}]
+    links:[
+      {t:"Web app ↗",u:"https://thermal-optimizers-coolride-engine.hf.space/"},
+      {t:"Telegram bot ↗",u:"https://t.me/coolride_bot"},
+      {t:"GitHub ↗",u:"https://github.com/arishya7/Cool_Route_prototype.git"},
+      {t:"Presentation ↗",u:"https://www.canva.com/design/DAG8zNFJ5Bc/JY-JbZnh5yR6hQkbWCoxpA/edit?utm_content=DAG8zNFJ5Bc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"}
+    ]
   },
   {
     id:"aumovio", tags:["ai"], cat:"AI & Automation",
@@ -94,7 +99,7 @@ const projects = [
     result:"80–90% recognition accuracy; 3rd place, Singtel award",
     tech:"YOLOv5 · Android Studio · Java · Firestore",
     images:["App poster","Award photo"],
-    links:[{t:"App demo ↗",u:"#"},{t:"UI board ↗",u:"#"}]
+    links:[{t:"App demo ↗",u:"#"},{t:"UI board ↗",u:"https://app.visily.ai/projects/d75c8db4-dc78-4877-8b9f-d70817b7d9c1/boards/1656082"}]
   },
   {
     id:"urop", tags:["ai","research"], cat:"Research",
@@ -119,13 +124,16 @@ const projects = [
     impact:"A booking platform integrated with Ascenda APIs, modeled before it was built.",
     stat:"10+", statCaption:"UML diagrams before a line of app code",
     body:[
-      "Modeled the business logic with 10+ UML diagrams before building a React + Node.js application with REST APIs for booking management, authentication and data handling — validated through unit, integration and system testing."
+      "Modeled the business logic with 10+ UML diagrams before building a React + Node.js/Express application, integrated with the Ascenda API, for booking management, authentication and data handling — built with a team of 8 and validated through unit, integration and system testing."
     ],
     role:"System architecture, full-stack development, testing",
     result:"Reliable end-to-end booking workflows, tested at unit, integration and system level",
-    tech:"React · Node.js · REST APIs · UML",
+    tech:"React · Node.js · Express · SQL · Ascenda API · REST APIs · UML",
     images:["App screenshot","Architecture diagram"],
-    links:[{t:"Repo ↗",u:"#"}]
+    links:[
+      {t:"Presentation ↗",u:"https://www.canva.com/design/DAGv3n0gUm4/X02pQJujENSV5RXZrWwR-g/view?utm_content=DAGv3n0gUm4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h46661a483d"},
+      {t:"Demo video ↗",u:"https://youtu.be/QTGqpzzO-40"}
+    ]
   },
   {
     id:"qube", tags:["design"], cat:"Design & Hardware",
@@ -138,22 +146,26 @@ const projects = [
     ],
     role:"Prototype build, pitching, UI/UX",
     result:"Working physical prototype, pitched end to end",
-    tech:"Bubble.io · Prototyping · UI/UX",
+    tech:"Bubble.io · Prototyping · Pitching · Video Editing · UI/UX",
     images:["Prototype photo"],
-    links:[{t:"Prototype video ↗",u:"#"},{t:"Pitch ↗",u:"#"}]
+    links:[
+      {t:"Pitch video ↗",u:"https://youtu.be/OdO8izkvzos"},
+      {t:"Web app ↗",u:"http://qube-17632.bubbleapps.io/version-test/"}
+    ]
   },
   {
     id:"foodsec", tags:["data"], cat:"Data",
     date:"2024", context:"Academic project",
     title:"Modelling food security across Africa",
-    impact:"Statistical modelling to surface the drivers behind food insecurity.",
-    stat:"—", statCaption:"multi-country indicator analysis",
+    impact:"A regression model — and an interactive website — that let anyone test what drives food insecurity.",
+    stat:"54", statCaption:"countries analysed across 10 years of data",
     body:[
-      "Team analysis modelling food security patterns across African countries — data cleaning, exploration and statistical modelling to surface the drivers behind food insecurity."
+      "Food insecurity is driven by dozens of interacting socioeconomic factors, which is hard to reason about from a spreadsheet alone. I examined indicators across 54 African countries over a 10-year period and built a multi-linear regression model in Python and Excel to predict food security outcomes.",
+      "To make the model usable beyond the report, I built a website with Bootstrap that lets anyone calculate a food insecurity index themselves by adjusting the key variables."
     ],
-    role:"Data cleaning, exploration, statistical modelling",
-    result:"Cross-country model of food security drivers",
-    tech:"Python · Data analysis · Statistical modelling",
+    role:"Data analysis, regression modelling, website build",
+    result:"54-country, 10-year regression model, deployed as an interactive calculator",
+    tech:"Python · Excel · Bootstrap · W3Schools · UI/UX",
     images:["Findings chart"],
     links:[{t:"Report ↗",u:"#"}]
   }
