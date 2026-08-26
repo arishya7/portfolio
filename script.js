@@ -118,6 +118,54 @@ const projects = [
     links:[{t:"Evaluation sheet ↗",u:"#"}]
   },
   {
+    id:"sociallistening", tags:["data","ai","fullstack"], cat:"Data",
+    date:"Aug 2025 – Jan 2026", context:"Mummy's Market",
+    title:"Social Listening Dashboard — Turning online chatter into signal",
+    impact:"An analytics platform that aggregates conversation across sources and turns it into sentiment, keyword and reliability signals marketing teams can act on.",
+    stat:"70%", statCaption:"cut in manual QA effort via Gemini-powered validation",
+    body:[
+      "The Social Listening Dashboard aggregates unstructured content from multiple online sources and turns it into structured signals — sentiment, keywords and topic reliability — for marketing and strategy teams to act on.",
+      "I built the pipeline end to end: ingesting and cleaning raw data with Python and DuckDB, extracting keywords with KeyBERT, scoring sentiment with a dedicated model and the Gemini API, and serving results through a FastAPI backend behind a four-tab dashboard."
+    ],
+    role:"Pipeline design, backend build, dashboard build",
+    result:"Live four-tab dashboard; Gemini-powered validation cut manual QA effort by 70%",
+    tech:"JavaScript · Tailwind CSS · Python · DuckDB · KeyBERT · Gemini API · FastAPI · Pandas · Fly.io · S3",
+    images:["Dashboard screenshot","Sentiment chart"],
+    links:[]
+  },
+  {
+    id:"influencerdash", tags:["data","fullstack"], cat:"Data",
+    date:"Aug 2025 – Jan 2026", context:"Mummy's Market",
+    title:"Influencer Dashboard — One interface for discovery and outreach",
+    impact:"Consolidating influencer data from multiple platforms into a single structured interface for discovery, evaluation and outreach.",
+    stat:"500+", statCaption:"online sources consolidated",
+    body:[
+      "Influencer data lives scattered across platforms, which makes discovery and evaluation slow. The Influencer Dashboard consolidates data scraped from multiple social platforms and public sources into one structured interface, so marketing and partnerships teams can discover, evaluate and reach out to influencers without piecing data together by hand.",
+      "I built the scraping and enrichment pipeline with Playwright, Beautiful Soup, AgentQL and Apify, served it through a FastAPI backend backed by MySQL, and packaged the system with Docker for deployment."
+    ],
+    role:"Scraping pipeline, backend build, deployment",
+    result:"Live dashboard consolidating influencer data across platforms for the marketing team",
+    tech:"Streamlit · Python · FastAPI · MySQL · Docker · Playwright · Beautiful Soup · AgentQL · Apify",
+    images:["Dashboard screenshot","Influencer profile view"],
+    links:[]
+  },
+  {
+    id:"aquaponics", tags:["ai","design","sustain"], cat:"Sustainability",
+    date:"2025", context:"Personal project",
+    title:"Aquaponics Monitoring — Computer vision for water quality",
+    impact:"An automated monitoring system that reads nitrate and nitrite levels from water colour, replacing manual test strips.",
+    stat:"—", statCaption:"automated water-quality monitoring",
+    body:[
+      "Manual water testing is slow and easy to skip, which makes it a weak link in sustainable aquaponics systems. I built an automated system that uses computer vision to detect and classify nitrate and nitrite levels — the indicators most critical to fish and plant health — from RGB/HSV colour analysis instead of manual test strips.",
+      "The system runs on an ESP32 with OpenCV-based image processing, replacing manual test-strip reading with continuous, automated monitoring."
+    ],
+    role:"System design, embedded build, computer vision pipeline",
+    result:"Working automated water-quality monitoring system",
+    tech:"ESP32 · Arduino IDE · OpenCV · RGB/HSV Analysis",
+    images:["System photo"],
+    links:[]
+  },
+  {
     id:"hotel", tags:["fullstack"], cat:"Full-Stack",
     date:"May – Aug 2025", context:"Academic project",
     title:"Hotel Booking System — Architecture-first full-stack build",

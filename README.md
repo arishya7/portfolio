@@ -29,6 +29,9 @@ exact name below and refresh — no code changes needed.
 - `images/projects/databusters-thumb.jpg`
 - `images/projects/caretech-thumb.jpg`
 - `images/projects/signify-thumb.jpg`
+- `images/projects/sociallistening-thumb.jpg`
+- `images/projects/influencerdash-thumb.jpg`
+- `images/projects/aquaponics-thumb.jpg`
 - `images/projects/urop-thumb.jpg`
 - `images/projects/hotel-thumb.jpg`
 - `images/projects/qube-thumb.jpg`
@@ -41,6 +44,9 @@ Numbered in the order they should appear, per project:
 - `images/projects/databusters-1.jpg`, `databusters-2.jpg`
 - `images/projects/caretech-1.jpg`, `caretech-2.jpg`
 - `images/projects/signify-1.jpg`, `signify-2.jpg`
+- `images/projects/sociallistening-1.jpg`, `sociallistening-2.jpg`
+- `images/projects/influencerdash-1.jpg`, `influencerdash-2.jpg`
+- `images/projects/aquaponics-1.jpg`
 - `images/projects/urop-1.jpg`
 - `images/projects/hotel-1.jpg`, `hotel-2.jpg`
 - `images/projects/qube-1.jpg`
@@ -48,7 +54,12 @@ Numbered in the order they should appear, per project:
 
 ## Still-placeholder links
 
-These currently point to `#` and need real URLs — give them to Claude to wire up, or edit directly:
+These currently point to `#` (or are missing entirely) and need real URLs — give them to Claude to wire up, or edit directly:
+- Signify → "App demo" video (the link given for it was identical to Qube's pitch video — almost certainly a copy-paste slip, so it's unfilled pending the real one)
+- UROP → "Evaluation sheet" (the source only had link text, no URL)
+- Social Listening Dashboard → live link exists (`https://talks-sustainable-soc-rugby.trycloudflare.com/brand.html`) but is a temporary Cloudflare tunnel URL, likely to go dead — not added since it probably won't still work when a visitor clicks it. Send a stable link if you have/get one.
+- Influencer Dashboard → live link exists (`http://mummysmarket.synology.me:8501/`) but it's Mummy's Market's internal server address — worth confirming you're OK exposing that publicly before it goes on the site.
+- Aquaponics Monitoring → project data is filled in from what's known so far (ESP32/OpenCV, description); still needs stat, images and links once you send more detail
 - Project links inside `script.js` → each project's `links: [...]` array (live app / demo / repo / report URLs)
 
 ## Local preview
