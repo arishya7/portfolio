@@ -99,7 +99,7 @@ const projects = [
     result:"80–90% recognition accuracy; 3rd place, Singtel award",
     tech:"YOLOv5 · Android Studio · Java · Firestore",
     images:["App poster","Award photo"],
-    links:[{t:"App demo ↗",u:"#"},{t:"UI board ↗",u:"https://app.visily.ai/projects/d75c8db4-dc78-4877-8b9f-d70817b7d9c1/boards/1656082"}]
+    links:[{t:"App demo ↗",u:"https://youtu.be/6Ckn_yOyZsQ"},{t:"UI board ↗",u:"https://app.visily.ai/projects/d75c8db4-dc78-4877-8b9f-d70817b7d9c1/boards/1656082"}]
   },
   {
     id:"urop", tags:["ai","research"], cat:"Research",
@@ -115,7 +115,7 @@ const projects = [
     result:"Cross-model benchmark across 9 quality dimensions",
     tech:"Python · Prompt engineering · LLM evaluation",
     images:["Evaluation matrix screenshot"],
-    links:[{t:"Evaluation sheet ↗",u:"#"}]
+    links:[{t:"Evaluation sheet ↗",u:"https://docs.google.com/spreadsheets/d/1iL055C8Z-NqJM7DxXY83hNJMCp3mKwY9/edit?usp=sharing&ouid=113424592686393838356&rtpof=true&sd=true"}]
   },
   {
     id:"sociallistening", tags:["data","ai","fullstack"], cat:"Data",
@@ -147,23 +147,7 @@ const projects = [
     result:"Live dashboard consolidating influencer data across platforms for the marketing team",
     tech:"Streamlit · Python · FastAPI · MySQL · Docker · Playwright · Beautiful Soup · AgentQL · Apify",
     images:["Dashboard screenshot","Influencer profile view"],
-    links:[]
-  },
-  {
-    id:"aquaponics", tags:["ai","design","sustain"], cat:"Sustainability",
-    date:"2025", context:"Personal project",
-    title:"Aquaponics Monitoring — Computer vision for water quality",
-    impact:"An automated monitoring system that reads nitrate and nitrite levels from water colour, replacing manual test strips.",
-    stat:"—", statCaption:"automated water-quality monitoring",
-    body:[
-      "Manual water testing is slow and easy to skip, which makes it a weak link in sustainable aquaponics systems. I built an automated system that uses computer vision to detect and classify nitrate and nitrite levels — the indicators most critical to fish and plant health — from RGB/HSV colour analysis instead of manual test strips.",
-      "The system runs on an ESP32 with OpenCV-based image processing, replacing manual test-strip reading with continuous, automated monitoring."
-    ],
-    role:"System design, embedded build, computer vision pipeline",
-    result:"Working automated water-quality monitoring system",
-    tech:"ESP32 · Arduino IDE · OpenCV · RGB/HSV Analysis",
-    images:["System photo"],
-    links:[]
+    links:[{t:"Live dashboard ↗",u:"http://mummysmarket.synology.me:8501/"}]
   },
   {
     id:"hotel", tags:["fullstack"], cat:"Full-Stack",
@@ -198,6 +182,7 @@ const projects = [
     images:["Prototype photo"],
     links:[
       {t:"Pitch video ↗",u:"https://youtu.be/OdO8izkvzos"},
+      {t:"Demo video ↗",u:"https://youtu.be/vo0aa_Ro530"},
       {t:"Web app ↗",u:"http://qube-17632.bubbleapps.io/version-test/"}
     ]
   },
@@ -215,7 +200,10 @@ const projects = [
     result:"54-country, 10-year regression model, deployed as an interactive calculator",
     tech:"Python · Excel · Bootstrap · W3Schools · UI/UX",
     images:["Findings chart"],
-    links:[{t:"Report ↗",u:"#"}]
+    links:[
+      {t:"Slide deck ↗",u:"https://www.canva.com/design/DAGXK0lUKjQ/BAxc11tWThCjQKeHFR3_Nw/view?utm_content=DAGXK0lUKjQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdb67092a94"},
+      {t:"Video ↗",u:"https://youtu.be/On1eTeHb9sw"}
+    ]
   }
 ];
 
